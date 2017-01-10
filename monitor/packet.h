@@ -33,6 +33,7 @@
 #define PACKET_FILTER_SHOW_TIME_OFFSET	(1 << 3)
 #define PACKET_FILTER_SHOW_ACL_DATA	(1 << 4)
 #define PACKET_FILTER_SHOW_SCO_DATA	(1 << 5)
+#define PACKET_FILTER_SHOW_TIME_EPOCH	(1 << 6)
 
 void packet_set_filter(unsigned long filter);
 void packet_add_filter(unsigned long filter);

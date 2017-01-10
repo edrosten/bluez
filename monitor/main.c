@@ -68,6 +68,7 @@ static void usage(void)
 		"\t-B, --tty-speed <rate> Set TTY speed (default 115200)\n"
 		"\t-t, --time             Show time instead of time offset\n"
 		"\t-T, --date             Show time and date information\n"
+		"\t-U, --unixtime         Show time since the Epoch\n"
 		"\t-S, --sco              Dump SCO traffic\n"
 		"\t-E, --ellisys [ip]     Send Ellisys HCI Injection\n"
 		"\t-h, --help             Show help options\n");
@@ -84,6 +85,7 @@ static const struct option main_options[] = {
 	{ "index",   required_argument, NULL, 'i' },
 	{ "time",    no_argument,       NULL, 't' },
 	{ "date",    no_argument,       NULL, 'T' },
+	{ "unixtime",no_argument,       NULL, 'U' },
 	{ "sco",     no_argument,	NULL, 'S' },
 	{ "ellisys", required_argument, NULL, 'E' },
 	{ "todo",    no_argument,       NULL, '#' },
@@ -113,7 +115,7 @@ int main(int argc, char *argv[])
 	for (;;) {
 		int opt;
 
-		opt = getopt_long(argc, argv, "d:r:w:a:s:p:i:tTSE:vh",
+		opt = getopt_long(argc, argv, "d:r:w:a:s:p:i:tTUSE:vh",
 						main_options, NULL);
 		if (opt < 0)
 			break;
@@ -157,12 +159,20 @@ int main(int argc, char *argv[])
 			break;
 		case 't':
 			filter_mask &= ~PACKET_FILTER_SHOW_TIME_OFFSET;
+			filter_mask &= ~PACKET_FILTER_SHOW_TIME_EPOCH;
 			filter_mask |= PACKET_FILTER_SHOW_TIME;
 			break;
 		case 'T':
 			filter_mask &= ~PACKET_FILTER_SHOW_TIME_OFFSET;
+			filter_mask &= ~PACKET_FILTER_SHOW_TIME_EPOCH;
 			filter_mask |= PACKET_FILTER_SHOW_TIME;
 			filter_mask |= PACKET_FILTER_SHOW_DATE;
+			break;
+		case 'U':
+			filter_mask &= ~PACKET_FILTER_SHOW_TIME_OFFSET;
+			filter_mask |= PACKET_FILTER_SHOW_TIME_EPOCH;
+			filter_mask &= ~PACKET_FILTER_SHOW_TIME;
+			filter_mask &= ~PACKET_FILTER_SHOW_DATE;
 			break;
 		case 'S':
 			filter_mask |= PACKET_FILTER_SHOW_SCO_DATA;

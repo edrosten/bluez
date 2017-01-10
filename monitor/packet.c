@@ -318,6 +318,13 @@ static void print_packet(struct timeval *tv, struct ucred *cred, char ident,
 			}
 		}
 
+		if (filter_mask & PACKET_FILTER_SHOW_TIME_EPOCH) {
+			n = sprintf(ts_str + ts_pos, " %lu.%06lu", tv->tv_sec, tv->tv_usec);
+			if (n > 0) {
+				ts_pos += n;
+				ts_len += n;
+			}
+		}
 		if (filter_mask & PACKET_FILTER_SHOW_TIME) {
 			n = sprintf(ts_str + ts_pos, " %02d:%02d:%02d.%06lu",
 				tm.tm_hour, tm.tm_min, tm.tm_sec, tv->tv_usec);
